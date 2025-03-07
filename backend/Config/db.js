@@ -5,7 +5,6 @@ const connectDB = async () => {
     await sequelize_conf.authenticate();
 
     await sequelize_conf.sync({ alter: true });  
-    console.log("Authentification réussi");
   } catch (error) {
     console.error(error);
   }
