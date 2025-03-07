@@ -1,19 +1,17 @@
 import { DataTypes } from "sequelize";
-import sequelize_conf from "../Config/sequelize_conf";
-import Users from "./users";
+import sequelize_conf from "../Config/sequelize_conf.js";
+import Users from "./users.js";
 
 const Tasks = sequelize_conf.define(
-  "Task",
+  "tasks",
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    task: { types: DataTypes.STRING, allowNull: false, unique: false },
-    isComplete: { types: DataTypes.BOOLEAN },
+    task: { type: DataTypes.STRING, allowNull: false, unique: false },
+    isComplete: { type: DataTypes.BOOLEAN },
   },
   {
     timestamps: true,
   }
 );
-
-Tasks.belongsTo(Users);
 
 export default Tasks;

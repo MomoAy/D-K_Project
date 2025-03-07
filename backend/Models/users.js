@@ -1,14 +1,13 @@
 import { DataTypes } from "sequelize";
-import sequelize_conf from "../Config/sequelize_conf";
-import Tasks from "./tasks";
+import sequelize_conf from "../Config/sequelize_conf.js";
 
 const Users = sequelize_conf.define(
-  "Users",
+  "users",
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     last_name: { type: DataTypes.STRING, allowNull: false, unique: false },
     first_name: { type: DataTypes.STRING, allowNull: false, unique: false },
-    email: { type: DataTypes.STRING ? allowNull : false, unique: true },
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -22,6 +21,5 @@ const Users = sequelize_conf.define(
     timestamps: true,
   }
 );
-Users.hasMany(Tasks);
 
 export default Users;

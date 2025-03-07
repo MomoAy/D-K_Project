@@ -4,11 +4,10 @@ const connectDB = async () => {
   try {
     await sequelize_conf.authenticate();
 
-    await sequelize_conf.sync({ alter: true });  
+    await sequelize_conf.sync({ alter: true });
   } catch (error) {
     console.error(error);
   }
-  
-}
+};
 
 export default connectDB;
