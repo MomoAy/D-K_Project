@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize_conf from "../Config/sequelize_conf.js";
+import bcrypt from "bcryptjs";
 
 const Users = sequelize_conf.define(
   "users",
@@ -21,5 +22,16 @@ const Users = sequelize_conf.define(
     timestamps: true,
   }
 );
+
+Users.beforeSave(async function (user) {
+  if (user.changed("password")) {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  }
+});
+
+Users.prototype.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 export default Users;
