@@ -2,7 +2,8 @@ import Tasks from "../Models/tasks.js";
 import asyncHandler from "express-async-handler";
 
 export const getAllTasksPerUser = asyncHandler(async (req, res) => {
-  const { id } = req.params; //je précise pour vous mais c'est pass l'id de la tache masi celui de l'utilisateur
+  const user = req.user;
+  const id = user.id;
 
   const tasks = Tasks.findAll({ where: { userId: id } });
   res.status(200).json(tasks);
@@ -11,7 +12,7 @@ export const getAllTasksPerUser = asyncHandler(async (req, res) => {
 export const getTask = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const task = await Tasks.findAll({ where: { id: id } });
+  const task = await Tasks.findByPk(id);
   if (!task) {
     res.status(400);
     throw new Error("Impossible de mettre à jour une tâche qui n'existe pas");
@@ -22,13 +23,14 @@ export const getTask = asyncHandler(async (req, res) => {
 
 export const addTask = asyncHandler(async (req, res) => {
   const { task } = req.body;
+  const id = req.user.id;
 
   if (task == null) {
     res.status(400);
     throw new Error("La tache ne peut pas être vide!!");
   }
 
-  await Tasks.create({ task, isComplete: false });
+  await Tasks.create({ task, isComplete: false, userId: id });
   res.status(201).json({ message: "Tâche ajouté avec succès" });
 });
 
