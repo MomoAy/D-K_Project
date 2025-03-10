@@ -6,6 +6,7 @@ import taskRoutes from "./Routes/task_routes.js";
 import userRoutes from "./Routes/user_routes.js";
 import "./Models/association.js";
 import cookieParser from "cookie-parser";
+import aiRoutes from "./Routes/ai_routes.js"
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1", taskRoutes);
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", aiRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

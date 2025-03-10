@@ -5,7 +5,10 @@ export const getAllTasksPerUser = asyncHandler(async (req, res) => {
   const user = req.user;
   const id = user.id;
 
-  const tasks = Tasks.findAll({ where: { userId: id } });
+  const tasks = await Tasks.findAll({
+    where: { userId: id },
+    attributes: { exclude: ["userId"] },
+  });
   res.status(200).json(tasks);
 });
 
