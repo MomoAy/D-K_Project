@@ -7,15 +7,20 @@ import {
   getTask,
   updateStatusTask,
 } from "../Controllers/task_controller.js";
+import authMiddleware from "../Middleware/auth_middlewares.js";
 
 const router = express.Router();
 
-router.get("/all-user-tasks/:id", getAllTasksPerUser);
+router.get("/all-user-tasks/:id", authMiddleware, getAllTasksPerUser);
 
-router.post("/tasks", addTask);
+router.post("/tasks", authMiddleware, addTask);
 
-router.route("/tasks/:id").get(getTask).put(updateTask).delete(deleteTask);
+router
+  .route("/tasks/:id")
+  .get(authMiddleware, getTask)
+  .put(authMiddleware, updateTask)
+  .delete(authMiddleware, deleteTask);
 
-router.put("/updateStatusTask/:id", updateStatusTask);
+router.put("/updateStatusTask/:id", authMiddleware, updateStatusTask);
 
 export default router;

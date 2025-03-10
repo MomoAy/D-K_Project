@@ -1,6 +1,6 @@
-import Users from "../Models/users";
+import Users from "../Models/users.js";
 import asyncHandler from "express-async-handler";
-import generateToken from "../Utils/generate_token";
+import generateToken from "../Utils/generate_token.js";
 
 export const register = asyncHandler(async (req, res) => {
   const { last_name, first_name, email, password } = req.body;
@@ -10,7 +10,7 @@ export const register = asyncHandler(async (req, res) => {
     throw new Error("Tous les champs doivent être rempli!");
   }
 
-  const existUser = Users.findAll({ where: { email: email } });
+  const existUser = await Users.findOne({ where: { email: email } });
   if (existUser) {
     res.status(400);
     throw new Error(
@@ -18,22 +18,27 @@ export const register = asyncHandler(async (req, res) => {
     );
   }
 
-  Users.create({ last_name, first_name, email, password });
+  const user = await Users.create({ last_name, first_name, email, password });
+  if(!user){
+    res.status(400);
+    throw new Error("Une erreur est survenue lors de la création du compte. Veuillez réesayer");
+  }
+
   res.status(201).json({ message: "Compte enregistré avec succès" });
 });
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const existUser = await Users.findOne(email);
+  const existUser = await Users.findOne({ where: { email: email } });
   if (!existUser) {
     res.status(400);
     throw new Error("Aucun compte n'est associé à cet email");
   }
 
-  if (existUser && existUser.matchPassword(password)) {
-    generateToken(res, Users.id);
-    const user = await Users.findByPk({
+  if (await existUser.matchPassword(password)) {
+    generateToken(res, existUser.id);
+    const user = await Users.findOne({
       id: existUser.id,
       attributes: { exclude: ["password"] },
     });
@@ -53,4 +58,8 @@ export const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Déconnexion..." });
 });
 
-export const getProfile = asyncHandler(async (req, res) => {});
+export const getProfile = asyncHandler(async (req, res) => {
+    const user = req.user;
+
+    res.status(200).json(user);
+});

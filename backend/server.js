@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
 import { notFound, errorHandler } from "./Middleware/error_middlewares.js";
 import taskRoutes from "./Routes/task_routes.js";
+import userRoutes from "./Routes/user_routes.js";
 import "./Models/association.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,10 +15,13 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+app.use(cookieParser());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1", taskRoutes);
+app.use("/api/v1", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

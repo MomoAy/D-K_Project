@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize_conf from "../Config/sequelize_conf.js";
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
 const Users = sequelize_conf.define(
   "users",
@@ -8,15 +8,15 @@ const Users = sequelize_conf.define(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     last_name: { type: DataTypes.STRING, allowNull: false, unique: false },
     first_name: { type: DataTypes.STRING, allowNull: false, unique: false },
-    email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    password: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: false,
+      unique: true,
       validate: {
         isEmail: true,
       },
     },
+    password: { type: DataTypes.STRING, allowNull: false, unique: false },
   },
   {
     timestamps: true,

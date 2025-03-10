@@ -1,4 +1,5 @@
 import Tasks from "../Models/tasks.js";
+import asyncHandler from "express-async-handler";
 
 export const getAllTasksPerUser = asyncHandler(async (req, res) => {
   const { id } = req.params; //je précise pour vous mais c'est pass l'id de la tache masi celui de l'utilisateur
@@ -48,7 +49,7 @@ export const updateTask = asyncHandler(async (req, res) => {
 export const updateStatusTask = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const existTask = await Tasks.findAll({ where: { id: id } });
+  const existTask = await Tasks.findByPk(id);
   if (!existTask) {
     res.status(400);
     throw new Error("La tâche n'existe pas!!");
