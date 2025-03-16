@@ -6,6 +6,7 @@ import Chatbot from "./components/Chatbot";
 import Header from "./components/Header";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import useAuthStore from "./store/authStore";
 
 function App() {
   const [activeTab, setActiveTab] = useState("todos");
@@ -13,6 +14,8 @@ function App() {
   const [newTodo, setNewTodo] = useState("");
   const [date, setDate] = useState(new Date());
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((state) => state.user);
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -73,7 +76,7 @@ function App() {
 
       <div className="flex-1 flex flex-col w-full">
         <Header
-          username="John"
+          username={isLoggedIn ? user.last_name : "Invité"}
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}
         />
