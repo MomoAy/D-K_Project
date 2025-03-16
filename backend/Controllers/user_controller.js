@@ -19,9 +19,11 @@ export const register = asyncHandler(async (req, res) => {
   }
 
   const user = await Users.create({ last_name, first_name, email, password });
-  if(!user){
+  if (!user) {
     res.status(400);
-    throw new Error("Une erreur est survenue lors de la création du compte. Veuillez réesayer");
+    throw new Error(
+      "Une erreur est survenue lors de la création du compte. Veuillez réesayer"
+    );
   }
 
   res.status(201).json({ message: "Compte enregistré avec succès" });
@@ -39,7 +41,7 @@ export const login = asyncHandler(async (req, res) => {
   if (await existUser.matchPassword(password)) {
     generateToken(res, existUser.id);
     const user = await Users.findOne({
-      id: existUser.id,
+      where: { id: existUser.id },
       attributes: { exclude: ["password"] },
     });
     res.status(200).json(user);
@@ -59,7 +61,7 @@ export const logout = asyncHandler(async (req, res) => {
 });
 
 export const getProfile = asyncHandler(async (req, res) => {
-    const user = req.user;
+  const user = req.user;
 
-    res.status(200).json(user);
+  res.status(200).json(user);
 });

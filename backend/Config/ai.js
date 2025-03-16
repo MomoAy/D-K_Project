@@ -3,13 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const baseURL = "https://api.aimlapi.com/v1";
-
-const apiKey = process.env.AIML_API_KEY;
+const baseURL = "https://openrouter.ai/api/v1";
+const apiKey = `${process.env.AIML_API_KEY}`;
 
 export const api = new OpenAI({
-  apiKey,
   baseURL,
+  apiKey,
 });
 
 
