@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copier les fichiers nécessaires
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Installer pnpm globalement
 RUN npm install -g pnpm
@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 5000
 
 # Lancer l'application
-CMD ["pnpm", "server"]
+CMD ["pnpm", "run", "server"]
